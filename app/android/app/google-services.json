@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "47322250236",
+    "project_id": "clone-8479d",
+    "storage_bucket": "clone-8479d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47322250236:android:a015ec71b23e0eadbb1079",
+        "android_client_info": {
+          "package_name": "com.example.myap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47322250236-cle59n7oru6q7qa7juqr680e62qbo8jr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAks-TXtAOMhYsgpLmbCAJvYVMc1WpKVhQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47322250236-adl15m6kl1k9lpnfovtmafh2ee9srvka.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "47322250236-6d6ubsvmus4sqakq5i6npu57v4t33chn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tinderLikeApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47322250236:android:15534160585a5108bb1079",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47322250236-cle59n7oru6q7qa7juqr680e62qbo8jr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAks-TXtAOMhYsgpLmbCAJvYVMc1WpKVhQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47322250236-adl15m6kl1k9lpnfovtmafh2ee9srvka.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "47322250236-6d6ubsvmus4sqakq5i6npu57v4t33chn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tinderLikeApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
