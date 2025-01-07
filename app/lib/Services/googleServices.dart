@@ -1,66 +1,88 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleServices{
 
     final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    Future<User?> signInWithGoogle() async {
-      try {
-        // Trigger Google sign-in flow for web
-        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+    Future<void> getHistory() async {
 
-        final UserCredential userCredential =
-            await _auth.signInWithPopup(googleProvider);
-
-        return userCredential.user;
-
-      } catch (e) {
-        print("Error during Google Sign-In: $e");
-        return null;
-      }
+        // Get collection history from  firestore
+        final history = await _firestore.collection('history').get();
+        print(history.docs.map((e) => e.data()).toList());
+        
     }
 
-    Future<String> getAccessToken() async {
-      try {
-        String? idToken = await _auth.currentUser?.getIdToken();
-        return idToken!;
-      } catch (error) {
-        print(error);
-        return "null";
-      }
-    }
+    Future<void> uploadData(Map data) async {
 
-    Future<void> createSheet() async {
-      // Replace with your actual credentials
-      String jsonString = await getAccessToken();
+        // Get the currentDB from firestore and upload data to it
+        final DB = await _firestore.collection('history').get();
+        // get currentDB from currentDB
+        final currentDB = DB.docs.where((element) => element.data()["closed"] == false).first.data();
 
-      print('Access Token: $jsonString');
+        
+        if(currentDB["count"] <= 100){
 
-      var headers = {
-          'Authorization': 'Bearer $jsonString',
-          'Content-Type': 'application/json',
-      };
+            final addList = DB.docs.where((element) => element.data()["closed"] == false).first.data()?["db"] ?? [];
 
-      var body = jsonEncode({
-          'title': 'My New Sheet', 
-      });
+            addList.add(data);
 
-      var url = Uri.parse('https://docs.googleapis.com/v1/documents');
+            await _firestore.collection('history').doc('database${currentDB["database"]}').update({
+                // Field should be added even if the document does exist
+                    "db": addList,
+                    "count": currentDB["count"] + 1,
+            });
 
-      try {
-        var response = await http.post(url, headers: headers, body: body);
-        if (response.statusCode == 200) {
-          print('Sheet created successfully!');
-          print(jsonDecode(response.body)); 
-        } else {
-          print('Failed to create sheet. Status code: ${response.statusCode}');
-          print(response.body);
         }
-      } catch (e) {
-        print('Error creating sheet: $e');
-      }
+        else{
+            await _firestore.collection('history').doc('database${currentDB["database"]}').update({
+                "db": data,
+                "closed": true
+            });
+
+            await _firestore.collection('history').doc('database${currentDB["database"] + 1}').set({
+                "db": [],
+                "count": 0,
+                "database": currentDB["database"] + 1,
+                "closed": false
+            });
+        }
     }
 
+
+    // Save data Encode Decode and Delete in Shared Preferences
+    Future<void> saveListToSharedPreferences(Map data) async {
+        // Save data to shared preferences
+            final prefs = await SharedPreferences.getInstance();
+
+        final jsonArray = jsonEncode(data);
+
+        await prefs.setString('data', jsonArray);
+
+    }
+
+
+    Future<Map> getListFromSharedPreferences() async {
+        // Get data from shared preferences
+            final prefs = await SharedPreferences.getInstance();
+
+        final jsonArray = prefs.getString('data');
+
+        if (jsonArray != null) {
+            return jsonDecode(jsonArray);
+        } else {
+            return {}; // Return an empty list if no data is found
+        }
+    }
+
+    Future<void> deleteListFromSharedPreferences() async {
+        // Delete data from shared preferences
+            final prefs = await SharedPreferences.getInstance();
+
+        await prefs.remove('data');
+    }
 }

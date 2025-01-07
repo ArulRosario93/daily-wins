@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Header extends StatelessWidget {
   final String title;
-  const Header({super.key, required this.title});
+  final String header;
+  const Header({super.key, required this.title, required this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -12,17 +13,10 @@ class Header extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
-        // Progress indicator
-        // LinearProgressIndicator(
-        //   value: 0.5,
-        //   backgroundColor: Colors.grey[300],
-        //   valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-        // ),
-
-
-        Text("Good Morning", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),) ),
+        Text(header, style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),) ),
         Padding(padding: EdgeInsets.only(top: 10)),
         Text(title, textAlign: TextAlign.center, style:GoogleFonts.poppins(textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),)),
+      
       ],
     );
   }

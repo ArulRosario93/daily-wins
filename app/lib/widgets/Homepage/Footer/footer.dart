@@ -1,5 +1,5 @@
 import 'package:app/widgets/Homepage/Footer/FooterContainer/footerContainer.dart';
-import 'package:app/widgets/Setting/Setting.dart';
+import 'package:app/widgets/Setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:app/widgets/History/history.dart';
 

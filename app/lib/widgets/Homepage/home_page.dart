@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:app/Services/googleServices.dart';
 import 'package:app/widgets/Homepage/Body/AddTaskDialogBox/addTaskBox.dart';
 import 'package:app/widgets/Homepage/Body/body.dart';
@@ -29,29 +28,47 @@ class _HomePageState extends State<HomePage> {
   ];
 
   List morning = [
-    "Rise with determination; today’s possibilities are limitless. Start strong, and success will follow!",
-    "A new dawn brings new opportunities—go seize them and make today extraordinary!",
-    "Be the energy you want to attract. Shine bright and take on the day!",
+    {
+      "title": "Good Morning",
+      "subtitle": "Rise with determination; today’s possibilities are limitless. Start strong, and success will follow!",
+    },
+    {
+      "title": "Good Morning",
+      "subtitle": "The day is yours to conquer. Stay focused, and success will follow!",
+    },
+    
   ];
 
   List afternoon = [
-    "Stay focused and keep pushing! The day’s progress is built by steady steps.",
-    "Pause, refresh, and fuel your energy. There’s still time to turn the day around!",
+    {
+      "title": "Good Afternoon",
+      "subtitle": "Stay focused and keep pushing! The day’s progress is built by steady steps.",
+    },
+    {
+      "title": "Good Afternoon",
+      "subtitle": "Pause, refresh, and fuel your energy. There’s still time to turn the day around!",
+    }
   ];
 
   List evening = [
-    "Reflect on the day’s wins and losses. Tomorrow is a new day to conquer!",
-    "The day is done, but your journey is not. Rest, recharge, and get ready to rise again!",
+    {
+      "title": "Good Evening",
+      "subtitle": "Reflect on the day’s wins and losses. Tomorrow is a new day to conquer!",
+    },
+    {
+      "title": "Good Evening",
+      "subtitle": "The day is done, but your journey is not. Rest, recharge, and get ready to rise again!",
+    }
   ];
 
-  String getGreeting() {
+  String getGreeting(String head) {
     var hour = DateTime.now().hour;
     if (hour < 12) {
-      return morning[Random().nextInt(morning.length)];
+      return morning[Random().nextInt(morning.length)][head];
     } else if (hour < 17) {
-      return afternoon[Random().nextInt(afternoon.length)];
+      return afternoon[Random().nextInt(afternoon.length)][head];
     } else {
-      return evening[Random().nextInt(evening.length)];
+      return evening[Random().nextInt(evening.length)][head];
     }
   }
 
@@ -63,13 +80,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onPressed() {
-    GoogleServices().createSheet();
+    GoogleServices().getHistory();
   }
 
-  void addtoTask(String title) {
+  void addtoTask(String title) async {
+
     setState(() {
       tasks.add({"title": title});
     });
+
+    await GoogleServices().saveListToSharedPreferences({
+        "title": title,
+    });
+
+    GoogleServices().uploadData(await GoogleServices().getListFromSharedPreferences());
+
   }
 
   void removeTask(String title){
@@ -100,7 +125,7 @@ class _HomePageState extends State<HomePage> {
           children: [
         
             //Header
-            Flexible(flex: 2, child: Header(title: getGreeting(),)),
+            Flexible(flex: 2, child: Header(title: getGreeting("subtitle"), header: getGreeting("title"),)),
         
             //Body
             Flexible(flex: 5, child: Body(tasks: tasks, taskCompleted: taskCompleted, journalClicked: clickOnJurnal)),
