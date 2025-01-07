@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
   final List tasks;
-  final Function(String) taskCompleted;
+  final Function(String val, int index) taskCompleted;
   final Function journalClicked;
   const Body({super.key, required this.tasks, required this.taskCompleted, required this.journalClicked});
 
@@ -32,7 +32,7 @@ class Body extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       for (var i = 0; counter < endAt && i < 3 ;counter++, i++) 
-                        Taskcontainer(title: tasks[counter]["title"], taskCompleted: taskCompleted, journalClicked: journalClicked)             
+                        Taskcontainer(title: tasks[counter]["title"], index: counter, taskCompleted: taskCompleted, journalClicked: journalClicked)             
                     ],
                   ),
                 ),
@@ -41,7 +41,7 @@ class Body extends StatelessWidget {
                   child: Row(
                     children: [
                       for (var i = 0; counter < endAt && i < 3 ;counter++, i++)  
-                        Taskcontainer(title: tasks[counter]["title"], taskCompleted: taskCompleted, journalClicked: journalClicked)             
+                        Taskcontainer(title: tasks[counter]["title"], index: counter, taskCompleted: taskCompleted, journalClicked: journalClicked)             
                       ],
                   ),
                 ),
@@ -59,7 +59,7 @@ class Body extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 for (var i = 0; i < count.floor(); i++) 
-                    Taskcontainer(title: tasks[i]["title"], taskCompleted: taskCompleted, journalClicked: journalClicked)             
+                    Taskcontainer(title: tasks[i]["title"], index: i, taskCompleted: taskCompleted, journalClicked: journalClicked)             
               ],
             ),
           ),
@@ -68,7 +68,7 @@ class Body extends StatelessWidget {
             Row(
               children: [
                 for (var i = count.floor(); i < tasks.length; i++)  
-                  Taskcontainer(title: tasks[i]["title"], taskCompleted: taskCompleted, journalClicked: journalClicked)
+                  Taskcontainer(title: tasks[i]["title"], index: i, taskCompleted: taskCompleted, journalClicked: journalClicked)
                 ],
             ),
           ),

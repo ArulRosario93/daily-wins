@@ -4,8 +4,12 @@ import 'package:app/widgets/Homepage/home_page.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
+  await dotenv.load(
+    fileName: ".env",
+  );
   WidgetsFlutterBinding.ensureInitialized();
   Workmanager().initialize(
     callbackDispatcher, // The top-level function that runs your tasks
@@ -38,7 +42,10 @@ void callbackDispatcher() {
 
 void performMidnightTask() async {
   // Perform your task here, e.g., send a notification or update data
-  // GoogleServices().uploadData( await GoogleServices().getListFromSharedPreferences() );
+  
+  await GoogleServices().uploadData(await GoogleServices().getListFromSharedPreferences());
+
+  GoogleServices().deleteListFromSharedPreferences();
 }
 
 class MyApp extends StatelessWidget {

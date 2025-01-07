@@ -80,7 +80,9 @@ class RemoveTask extends StatelessWidget {
 class TaskCompleted extends StatelessWidget {
   final String title;
   final Function removeTask;
-  const TaskCompleted({super.key, required this.title, required this.removeTask});
+  final Function taskCompleted;
+  final int index;
+  const TaskCompleted({super.key, required this.title, required this.removeTask, required this.taskCompleted, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +90,7 @@ class TaskCompleted extends StatelessWidget {
     void onSubmit(){
 
       // This is where you would add the task to the completed list
+      taskCompleted(title, index);
 
       // And Pop the dialog box
       Navigator.pop(context);

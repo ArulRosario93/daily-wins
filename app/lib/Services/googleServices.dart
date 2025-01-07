@@ -1,12 +1,10 @@
 import 'dart:convert';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleServices{
 
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+    // final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
     Future<void> getHistory() async {
@@ -27,7 +25,7 @@ class GoogleServices{
         
         if(currentDB["count"] <= 100){
 
-            final addList = DB.docs.where((element) => element.data()["closed"] == false).first.data()?["db"] ?? [];
+            final addList = DB.docs.where((element) => element.data()["closed"] == false).first.data()["db"] ?? [];
 
             addList.add(data);
 
@@ -53,16 +51,14 @@ class GoogleServices{
         }
     }
 
-
     // Save data Encode Decode and Delete in Shared Preferences
-    Future<void> saveListToSharedPreferences(Map data) async {
+    Future<void> saveListToSharedPreferences(List<Map> data) async {
         // Save data to shared preferences
             final prefs = await SharedPreferences.getInstance();
 
         final jsonArray = jsonEncode(data);
 
         await prefs.setString('data', jsonArray);
-
     }
 
 
@@ -78,6 +74,7 @@ class GoogleServices{
             return {}; // Return an empty list if no data is found
         }
     }
+
 
     Future<void> deleteListFromSharedPreferences() async {
         // Delete data from shared preferences

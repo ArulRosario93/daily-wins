@@ -4,9 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 class Taskcontainer extends StatelessWidget {
 
   final String title;
-  final Function(String title) taskCompleted;
+  final Function(String title, int index) taskCompleted;
   final Function journalClicked;
-  const Taskcontainer({super.key, required this.title, required this.taskCompleted, required this.journalClicked});
+  final int index;
+  const Taskcontainer({super.key, required this.title, required this.taskCompleted, required this.journalClicked, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class Taskcontainer extends StatelessWidget {
         journalClicked();
         return;
       }
-      taskCompleted(title);
+      taskCompleted(title, index);
     }
 
     return Flexible(

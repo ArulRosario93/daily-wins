@@ -18,12 +18,15 @@ class _HomePageState extends State<HomePage> {
   List<Map> tasks = [
     {
       "title": "Bible Study",
+      "completed": false,
     },
     {
       "title": "Physical Win",
+      "completed": false,
     },
     {
       "title": "Journel",
+      "completed": false,
     },
   ];
 
@@ -76,7 +79,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    // GoogleServices().signInWithGoogle();
+    GoogleServices().saveListToSharedPreferences(tasks);
   }
 
   void onPressed() {
@@ -86,15 +89,21 @@ class _HomePageState extends State<HomePage> {
   void addtoTask(String title) async {
 
     setState(() {
-      tasks.add({"title": title});
+      tasks.add({"title": title, "completed": false});
     });
 
-    await GoogleServices().saveListToSharedPreferences({
-        "title": title,
+    await GoogleServices().saveListToSharedPreferences(tasks);
+
+    // GoogleServices().uploadData(await GoogleServices().getListFromSharedPreferences());
+
+  }
+
+  void handleTaskCompleted(int index) {
+    setState(() {
+      tasks[index]["completed"] = true;
     });
 
-    GoogleServices().uploadData(await GoogleServices().getListFromSharedPreferences());
-
+    print(tasks);
   }
 
   void removeTask(String title){
@@ -111,8 +120,8 @@ class _HomePageState extends State<HomePage> {
     return showDialog(context: context, builder: (context) => AddTaskbox(addtoTask: addtoTask));
   }
 
-  Future taskCompleted(String title){
-    return showDialog(context: context, builder: (context) => TaskCompleted(title: title, removeTask: removeTask));
+  Future taskCompleted(String title, int index){
+    return showDialog(context: context, builder: (context) => TaskCompleted(title: title, index: index, taskCompleted: handleTaskCompleted, removeTask: removeTask));
   }
 
   @override
