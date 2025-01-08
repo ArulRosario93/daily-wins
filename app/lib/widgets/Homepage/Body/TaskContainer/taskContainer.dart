@@ -5,7 +5,7 @@ class Taskcontainer extends StatelessWidget {
 
   final String title;
   final Function(String title, int index) taskCompleted;
-  final Function journalClicked;
+  final Function(int index) journalClicked;
   final int index;
   const Taskcontainer({super.key, required this.title, required this.taskCompleted, required this.journalClicked, required this.index});
 
@@ -14,7 +14,7 @@ class Taskcontainer extends StatelessWidget {
 
     void onClick(){
       if (title == "Journel") {
-        journalClicked();
+        journalClicked(index);
         return;
       }
       taskCompleted(title, index);

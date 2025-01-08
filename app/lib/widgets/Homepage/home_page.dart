@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
     },
     {
       "title": "Journel",
+      "link": "",
       "completed": false,
     },
   ];
@@ -94,7 +95,9 @@ class _HomePageState extends State<HomePage> {
 
     await GoogleServices().saveListToSharedPreferences(tasks);
 
-    // GoogleServices().uploadData(await GoogleServices().getListFromSharedPreferences());
+    print(await GoogleServices().getListFromSharedPreferences());
+
+    // await GoogleServices().uploadData(await GoogleServices().getListFromSharedPreferences());
 
   }
 
@@ -112,8 +115,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future clickOnJurnal() {
-    return showDialog(context: context, builder: (context) => JournalTask());
+  void journelTaskAdded(String link, int index) {
+      setState(() {
+        tasks[index]["link"] = link;
+      });
+  }
+
+  Future clickOnJurnal(int index) {
+    return showDialog(context: context, builder: (context) => JournalTask(index: index, journelTaskAdded: journelTaskAdded,));
   }
 
   Future addTask() {

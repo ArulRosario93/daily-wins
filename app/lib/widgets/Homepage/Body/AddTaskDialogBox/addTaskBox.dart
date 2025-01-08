@@ -142,7 +142,9 @@ class TaskCompleted extends StatelessWidget {
 }
 
 class JournalTask extends StatelessWidget {
-  const JournalTask({super.key});
+  final int index;
+  final Function(String link, int index) journelTaskAdded;
+  const JournalTask({super.key, required this.index, required this.journelTaskAdded});
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +157,7 @@ class JournalTask extends StatelessWidget {
       }
 
       // This is where you would add the task to the completed list
+      journelTaskAdded(_linkController.text, index);
 
       // And Pop the dialog box
       Navigator.pop(context);

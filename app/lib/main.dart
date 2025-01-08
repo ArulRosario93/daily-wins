@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+// 60 * 24 = 1440 minutes in a day
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(
     fileName: ".env",
   );
-  WidgetsFlutterBinding.ensureInitialized();
   Workmanager().initialize(
     callbackDispatcher, // The top-level function that runs your tasks
     isInDebugMode: true, // Set to false in production
@@ -18,7 +19,7 @@ void main() async {
   Workmanager().registerPeriodicTask(
     "midnightTask", // Unique name for the task
     "checkMidnightTask", // Name of the background task
-    frequency: Duration(hours: 24), // Runs once every 24 hours
+    frequency: Duration(minutes: 15), // Runs once every 24 hours
     initialDelay: Duration(seconds: 10), // Initial delay before first execution
   );
   await Firebase.initializeApp(
@@ -31,10 +32,7 @@ void main() async {
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     if (task == "checkMidnightTask") {
-      final now = DateTime.now();
-      if (now.hour == 0 && now.minute == 0) {
         performMidnightTask();
-      }
     }
     return Future.value(true); // Signal task completion
   });
@@ -43,8 +41,14 @@ void callbackDispatcher() {
 void performMidnightTask() async {
   // Perform your task here, e.g., send a notification or update data
   
-  await GoogleServices().uploadData(await GoogleServices().getListFromSharedPreferences());
-
+  await GoogleServices().uploadData(
+    [
+      {
+        "title": "Midnight Task",
+        "completed": true,
+      }
+    ],
+  );
   GoogleServices().deleteListFromSharedPreferences();
 }
 

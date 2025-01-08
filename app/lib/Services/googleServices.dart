@@ -15,7 +15,7 @@ class GoogleServices{
         
     }
 
-    Future<void> uploadData(Map data) async {
+    Future<void> uploadData(List data) async {
 
         // Get the currentDB from firestore and upload data to it
         final DB = await _firestore.collection('history').get();
@@ -34,7 +34,6 @@ class GoogleServices{
                     "db": addList,
                     "count": currentDB["count"] + 1,
             });
-
         }
         else{
             await _firestore.collection('history').doc('database${currentDB["database"]}').update({
@@ -62,7 +61,7 @@ class GoogleServices{
     }
 
 
-    Future<Map> getListFromSharedPreferences() async {
+    Future<List> getListFromSharedPreferences() async {
         // Get data from shared preferences
             final prefs = await SharedPreferences.getInstance();
 
@@ -71,7 +70,7 @@ class GoogleServices{
         if (jsonArray != null) {
             return jsonDecode(jsonArray);
         } else {
-            return {}; // Return an empty list if no data is found
+            return []; // Return an empty list if no data is found
         }
     }
 

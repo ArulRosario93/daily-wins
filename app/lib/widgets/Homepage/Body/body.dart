@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Body extends StatelessWidget {
   final List tasks;
   final Function(String val, int index) taskCompleted;
-  final Function journalClicked;
+  final Function(int index) journalClicked;
   const Body({super.key, required this.tasks, required this.taskCompleted, required this.journalClicked});
 
   @override
